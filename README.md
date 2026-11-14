@@ -142,18 +142,7 @@ Recurring-expense and input-validation logic.
 
 The remaining widget test failure occurred during the end-to-end application flow, where the expected "Profile saved" confirmation message was not found after editing the user's email. The issue remains under investigation.
 
-Testing covered:
 
-- Account creation, authentication and validation.
-- Budget calculations and expense operations.
-- Category and savings management.
-- Reports and chart updates.
-- English and Arabic interfaces.
-- Navigation between application screens.
-- Local data persistence after restarting.
-- Form validation and error handling.
-
-The automated test suite can be rerun using `flutter test`. The application can also be tested manually by following the main application flow above.
 
 ## 9. Known Limitations
 
