@@ -128,7 +128,19 @@ These changes preserve the intended application behavior while simplifying the P
 
 ## 8. Testing and Verification
 
-The team completed application integration and reported successful automated and manual testing.
+The integrated Flutter application was launched successfully on Chrome. The team ran flutter test, with 11 tests passing and one widget test failing.
+
+The successful automated tests covered:
+
+Local authentication, account updates and validation.
+
+Expense provider and local data persistence.
+
+Password visibility controls.
+
+Recurring-expense and input-validation logic.
+
+The remaining widget test failure occurred during the end-to-end application flow, where the expected "Profile saved" confirmation message was not found after editing the user's email. The issue remains under investigation.
 
 Testing covered:
 
