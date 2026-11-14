@@ -112,6 +112,5 @@ ChatGPT was used for design review, documentation refinement, and Flutter debugg
 ## Team Members
 
 - Sara Esmaeil
-- Shahad Alhassan
 - Afrah Alsubhi
 - Ghadeer Alsanonah
