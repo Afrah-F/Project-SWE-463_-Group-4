@@ -1,130 +1,26 @@
-
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const MizaniaApp());
-}
+import 'app.dart';
+import 'services/auth_service.dart';
+import 'services/data_repository.dart';
 
-class MizaniaApp extends StatelessWidget {
-  const MizaniaApp({super.key});
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Mizania',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF315B49),
-        ),
-        useMaterial3: true,
-      ),
-      home: const WelcomeScreen(),
-    );
-  }
-}
+  // Date names for English and Arabic (used by History, Reports, date picker).
+  await initializeDateFormatting();
 
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+  final prefs = await SharedPreferences.getInstance();
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.account_balance_wallet,
-              size: 80,
-              color: Color(0xFF315B49),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'MIZANIA',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 12),
-            const Text('Student Budget Tracker'),
-            const SizedBox(height: 30),
-            FilledButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const AppShell(),
-                  ),
-                );
-              },
-              child: const Text('Get Started'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class AppShell extends StatefulWidget {
-  const AppShell({super.key});
-
-  @override
-  State<AppShell> createState() => _AppShellState();
-}
-
-class _AppShellState extends State<AppShell> {
-  int selectedIndex = 0;
-
-  final List<String> pages = [
-    'Home',
-    'History',
-    'Budgets',
-    'Savings',
-    'Reports',
-    'Settings',
-  ];
-
-  final List<IconData> icons = [
-    Icons.home_outlined,
-    Icons.receipt_long_outlined,
-    Icons.account_balance_wallet_outlined,
-    Icons.savings_outlined,
-    Icons.pie_chart_outline,
-    Icons.settings_outlined,
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(pages[selectedIndex]),
-        backgroundColor: const Color(0xFF315B49),
-        foregroundColor: Colors.white,
-      ),
-      body: Center(
-        child: Text(
-          '${pages[selectedIndex]} Screen',
-          style: const TextStyle(fontSize: 26),
-        ),
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: selectedIndex,
-        onDestinationSelected: (index) {
-          setState(() {
-            selectedIndex = index;
-          });
-        },
-        destinations: List.generate(
-          pages.length,
-          (index) => NavigationDestination(
-            icon: Icon(icons[index]),
-            label: pages[index],
-          ),
-        ),
-      ),
-    );
-  }
+  runApp(
+    MizaniaApp(
+      prefs: prefs,
+      // Phase 3 uses the on-device services below. Phase 4: replace them with
+      // a FirebaseAuthService and an sqflite-based DataRepository.
+      authService: LocalAuthService(prefs),
+      repository: LocalDataRepository(prefs),
+    ),
+  );
 }
